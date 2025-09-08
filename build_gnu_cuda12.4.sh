@@ -54,3 +54,4 @@ mkdir -p $BUILD_PATH/build_proxy $BUILD_PATH/build_fortproxy $BUILD_PATH/build_e
     cmake --build . --parallel
     make install
 )
+

@@ -17,4 +17,4 @@
 # limitations under the License.
 
 #docker build -t ${USER}/e3sm-climsim -f Dockerfile .
-docker build -t e3sm-climsim -f Dockerfile .
+docker build -t e3sm-climsim-ftorch -f Dockerfile_ftorch .

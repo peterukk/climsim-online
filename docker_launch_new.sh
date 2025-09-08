@@ -16,5 +16,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#docker build -t ${USER}/e3sm-climsim -f Dockerfile .
-docker build -t e3sm-climsim -f Dockerfile .
+docker run --runtime nvidia -it --net=host --ipc=host \
+    --ulimit memlock=-1 --ulimit stack=67108864 \
+    -v ${PWD}/inputdata:/storage/inputdata \
+    -v ${PWD}/shared_e3sm:/storage/shared_e3sm \
+    -v ${PWD}/scratch:/scratch \
+    e3sm-climsim-ftorch bash
