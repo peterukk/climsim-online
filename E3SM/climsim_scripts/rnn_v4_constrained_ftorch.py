@@ -12,9 +12,27 @@ newcase,config,build,clean,submit,continue_run = False,False,False,False,False,F
 
 acct = os.environ.get("MMF_NN_SLURM_ACCOUNT", "m4331")
 
-case_prefix = 'example_job_submit_nnwrapper_v4_constrained_rnn_ftorch_srnn'
+# torch_model = '/storage/shared_e3sm/saved_models/wrapper/v4_rnn_wrapper_constrained_huber.pt'
+# torch_model = '/storage/shared_e3sm/saved_models/wrapper_ftorch/partiallystochasticRNN-Hidden_lr0.0005.neur144-144_xv4_yv5_num55290_ep14.pt'
+# torch_model = '/storage/shared_e3sm/saved_models/wrapper_ftorch/partiallystochasticRNN-Hidden_lr0.0005.neur144-144_xv4_yv5_num55290_ep14_cuda.pt'
+# torch_model = "/storage/shared_e3sm/saved_models/wrapper_ftorch/LSTM-Hidden_lr0.0005.neur144-144_xv4_yv5_num10438_34_cuda.pt"
+# torch_model = "/storage/shared_e3sm/saved_models/wrapper_ftorch/LSTM-Hidden_lr0.001.neur128-128_xv4_yv5_num25949_script_cuda_cuda.pt"
+torch_model = "/storage/shared_e3sm/saved_models/wrapper_ftorch/LSTM-Hidden_lr0.0007.neur144-144_xv4_yv4_num36534_script_cpu.pt"
+torch_model = "/storage/shared_e3sm/saved_models/wrapper_ftorch/LSTM-Hidden_lr0.0007.neur144-144_xv4_mp0_num51230_script_cpu.pt"
+torch_model = "/storage/shared_e3sm/saved_models/wrapper_ftorch/LSTM-Hidden_lr0.0007.neur144-144_xv4_mp-1_num88067_script_cpu.pt"
+torch_model = "/storage/shared_e3sm/saved_models/wrapper_ftorch/SRNN-Hidden_lr0.0007.neur144-144_xv4_mp0_num72844_script_cpu.pt"
+
+
+cb_use_memory = '.true.'
+cb_use_ar_noise = '.true.'
+
+model_num = torch_model.split("num")[1].split("_")[0]
+
+case_prefix = 'example_job_submit_nnwrapper_v4_rnn_{}'.format(model_num)
 # exe_refcase = ''
-inputlength = 0   # this option for models using HIDDEN CONVECTIVE MEMORY
+inputlength = 20   # this option for models using HIDDEN CONVECTIVE MEMORY
+#inputlength = 15    # any other number for NO CONVECTIVE MEMORY
+#inputlength = 0   # this option for models using HIDDEN CONVECTIVE MEMORY
 #inputlength = 1    # any other number for NO CONVECTIVE MEMORY
 
 top_dir  = "/climsim"
@@ -70,10 +88,12 @@ if debug_mode: case_list.append('debug')
 case='.'.join(case_list)
 #---------------------------------------------------------------------------------------------------
 # MMF_NN_EMULATOR
-torch_model = '/storage/shared_e3sm/saved_models/wrapper/v4_rnn_wrapper_constrained_huber.pt'
-torch_model = '/storage/shared_e3sm/saved_models/wrapper_ftorch/partiallystochasticRNN-Hidden_lr0.0005.neur144-144_xv4_yv5_num55290_ep14.pt'
 
-cb_use_cuda = '.false.'
+if "cuda" in torch_model:
+  cb_use_cuda = '.true.'
+else:
+  cb_use_cuda = '.false.'
+
 #inputlength = 1525
 #inputlength = 0
 outputlength = 368
@@ -167,6 +187,8 @@ cb_ramp_step_0steps = {cb_ramp_step_0steps}
 cb_ramp_step_1steps = {cb_ramp_step_1steps}
 cb_strato_water_constraint = {cb_strato_water_constraint}
 cb_use_cuda = {cb_use_cuda}
+cb_use_memory = {cb_use_memory}
+cb_use_ar_noise = {cb_use_ar_noise}
 /
 
 &cam_history_nl
